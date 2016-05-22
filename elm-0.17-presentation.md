@@ -7,9 +7,22 @@ theme: Fira
 ---
 
 # What is Elm?
-## (Really Short Introduction)
 
-^ Elm is a functional language that compiles to JavaScript.
+---
+
+## Really Short Introduction
+
+Elm is a functional language that compiles to JavaScript.
+
+Noted for helpful compiler errors.
+
+ML style language.
+
+---
+
+# Example
+
+## (Pardon the formatting)
 
 ---
 
@@ -34,6 +47,22 @@ view model = Html.h1 [] [ Html.text model.message ]
 ^ A really small Elm app (which fully uses the elm pattern)
 ^ Also shows a hint about what's new
 ^ I'm omitting type signatures for brevity on slides
+
+---
+
+# The Pattern
+
+1. Model
+2. Update
+3. View
+
+(AKA Redux in ReactJS land)
+
+---
+
+# Example
+
+## (With type signatures)
 
 ---
 
@@ -67,7 +96,7 @@ view model = Html.h1 [] [ Html.text model.message ]
 
 ---
 
-## No More Signals :+1:
+## No More Signals :smile:
 ### foldp and mailboxes are gone too
 ### Subscriptions are the new hotness
 
@@ -89,18 +118,21 @@ main = Html.App.program
 
 type alias Model = { time : Time.Time}
 init = ( { time = 0 }, Cmd.none)
+
+type Msg = Tick Time.Time
 update msg model =
     case msg of
         Tick newTime -> ( { model | time = newTime } , Cmd.none)
-
-type Msg
-    = Tick Time.Time
 
 subscriptions : Model -> Sub Msg
 subscriptions model = Time.every Time.second Tick
 
 view model = Html.h1 [] [ Html.text ("The time is " ++ toString model.time) ]
 ```
+
+---
+
+## Just the Subscription Bits
 
 ---
 
@@ -117,6 +149,7 @@ update : Msg -> Model -> Model
 update msg model =
     case msg of
         Tick newTime -> ...
+        SomeActionFromUser -> ...
 ```
 
 ---
@@ -195,11 +228,11 @@ view model =
 
 ---
 
-# 0.17 Changes in More Detail
+# More 0.17 Changes
 
 ---
 
-No more Signal.Address
+No more Signal.Address (simpler code)
 
 ```elm
 -- 0.16
@@ -231,12 +264,12 @@ view model =
 
 ---
 
-# Effect Managers Added
+## Effect Managers Added
 ### Moves the hard work to the library author
 
 ---
 
-# Web Sockets
+## Example: Web Sockets
 
 ---
 
@@ -283,8 +316,82 @@ viewMessage msg = Html.p [] [ text msg ]
 ```
 
 ---
-- http://elm-lang.org/
+
+## Graphics Demoted to External library
+### Aw
+
+---
+
+HTML app first, with possible embedded Graphics.
+
+Html.toElement is now Element.toHtml.
+
+No more Graphics.Input (use HTML forms).
+
+---
+
+```elm
+import Color
+import Html
+import Html.App
+import Element
+import Collage exposing (..)
+
+main =
+    Html.App.beginnerProgram { model = model, update = update, view = view }
+
+type alias Model = String
+model = "Hello"
+
+type Msg = Nothing
+update msg model =
+    model
+
+view model =
+    Html.div []
+        [ collage 320 200
+            [ group
+                [ circle 50 |> filled Color.charcoal
+                , circle 40 |> filled Color.yellow
+                ]
+            ] |> Element.toHtml
+        ]
+```
+
+---
+
+```elm
+-- 0.16
+view : Model -> Element
+view reading =
+    collage 320 200
+        [ group
+            [ circle 50 |> filled Color.charcoal
+            , circle 40 |> filled Color.yellow
+            ]
+        ]
+
+-- 0.17
+view : Model -> Html Msg
+view model =
+    Html.div []
+        [ collage 320 200
+            [ group
+                [ circle 50 |> filled Color.charcoal
+                , circle 40 |> filled Color.yellow
+                ]
+            ] |> Element.toHtml
+        ]
+```
+
+
+---
+
+# More on 0.17
+
+---
+
 - http://elm-lang.org/blog/farewell-to-frp - Elm 0.17 Post
-- http://guide.elm-lang.org
+- http://guide.elm-lang.org - new guide
 - http://www.lambdacat.com/migrating-from-elm-0-16-to-0-17-from-startapp/
 - http://noredink.github.io/posts/signalsmigration.html
