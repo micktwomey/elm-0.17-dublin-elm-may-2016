@@ -20,7 +20,7 @@ ML style language.
 
 ---
 
-# Example
+# Basic Example
 
 ## (Pardon the formatting)
 
@@ -57,38 +57,6 @@ view model = Html.h1 [] [ Html.text model.message ]
 3. View
 
 (AKA Redux in ReactJS land)
-
----
-
-# Example
-
-## (With type signatures)
-
----
-
-```elm
-import Html
-import Html.App
-
-main : Program Never
-main = Html.App.beginnerProgram
-    { model = model
-    , update = update
-    , view = view }
-
-type alias Model = { message : String}
-
-model : Model
-model = { message = "Hello World!" }
-
-type Msg = Nothing
-
-update : Msg -> Model -> Model
-update msg model = model
-
-view Model -> Html.Html Msg
-view model = Html.h1 [] [ Html.text model.message ]
-```
 
 ---
 
@@ -160,39 +128,23 @@ update msg model =
 ---
 
 ```elm
-import Html
-import Html.App
-import Time
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-
 main = Html.App.program
     { init = init, update = update , view = view
-    , subscriptions = subscriptions
-    }
+    , subscriptions = subscriptions }
 
 type alias Model = Time.Time
 init = ( 0 , Cmd.none)
 update msg model =
     case msg of
         Tick newTime -> ( newTime , Cmd.none)
-
-type Msg
-    = Tick Time.Time
-
-subscriptions : Model -> Sub Msg
+type Msg = Tick Time.Time
 subscriptions model = Time.every Time.second Tick
 
 view model =
   let
-    angle =
-      turns (Time.inMinutes model)
-
-    handX =
-      toString (50 + 40 * cos angle)
-
-    handY =
-      toString (50 + 40 * sin angle)
+    angle = turns (Time.inMinutes model)
+    handX = toString (50 + 40 * cos angle)
+    handY = toString (50 + 40 * sin angle)
   in
     svg [ viewBox "0 0 100 100", width "300px" ]
       [ circle [ cx "50", cy "50", r "45", fill "#0B79CE" ] []
@@ -207,18 +159,18 @@ view model =
 ---
 
 ```elm
-view model = Html.h1 [] [ Html.text ("The time is " ++ toString model.time) ]
+-- HTML
+view model =
+    Html.h1 [] [ Html.text ("The time is " ++ toString model.time) ]
 
+-- SVG
 view model =
   let
-    angle =
-      turns (Time.inMinutes model)
+    angle = turns (Time.inMinutes model)
 
-    handX =
-      toString (50 + 40 * cos angle)
+    handX = toString (50 + 40 * cos angle)
 
-    handY =
-      toString (50 + 40 * sin angle)
+    handY = toString (50 + 40 * sin angle)
   in
     svg [ viewBox "0 0 100 100", width "300px" ]
       [ circle [ cx "50", cy "50", r "45", fill "#0B79CE" ] []
@@ -261,6 +213,34 @@ view model =
 - StartApp is now Html.App
 - Many packages moved into core
 - Graphics.* now lives in evancz/elm-graphics
+
+---
+
+# Msg Example (clicking buttons)
+
+---
+
+```elm
+type Msg
+    = SayHello
+    | SayGoodbye
+
+update msg model =
+    case msg of
+        SayHello ->
+            { model | message = "Hello there!" }
+
+        SayGoodbye ->
+            { model | message = "Goodbye!" }
+
+
+view model =
+    Html.div []
+        [ Html.button [ Html.Events.onClick SayHello ] [ Html.text "Say Hello!" ]
+        , Html.button [ Html.Events.onClick SayGoodbye ] [ Html.text "Say Goodbye!" ]
+        , Html.h1 [] [ Html.text model.message ]
+        ]
+```
 
 ---
 
@@ -384,6 +364,34 @@ view model =
         ]
 ```
 
+---
+
+## Graphics Clock Example
+
+---
+
+```elm
+Html.div []
+    [ collage 640
+        480
+        [ group
+            [ circle 150 |> filled Color.darkBlue
+            , path
+                [ ( 0, 0 )
+                , ( handX, handY )
+                ]
+                |> traced
+                    { defaultLine
+                        | width = 5
+                        , color = Color.darkCharcoal
+                    }
+            ]
+        ]
+        |> toHtml
+    , Html.h1 [] [ Html.text ("The time is " ++ time) ]
+    ]
+```
+
 
 ---
 
@@ -391,7 +399,10 @@ view model =
 
 ---
 
-- http://elm-lang.org/blog/farewell-to-frp - Elm 0.17 Post
-- http://guide.elm-lang.org - new guide
-- http://www.lambdacat.com/migrating-from-elm-0-16-to-0-17-from-startapp/
-- http://noredink.github.io/posts/signalsmigration.html
+http://elm-lang.org/blog/farewell-to-frp
+
+http://guide.elm-lang.org
+
+http://www.lambdacat.com/migrating-from-elm-0-16-to-0-17-from-startapp/
+
+http://noredink.github.io/posts/signalsmigration.html
