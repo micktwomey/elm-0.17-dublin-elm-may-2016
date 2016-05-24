@@ -22,7 +22,7 @@ ML style language.
 
 # Basic Example
 
-## (Pardon the formatting)
+## (Pardon the formatting to fit)
 
 ---
 
@@ -47,6 +47,7 @@ view model = Html.h1 [] [ Html.text model.message ]
 ^ A really small Elm app (which fully uses the elm pattern)
 ^ Also shows a hint about what's new
 ^ I'm omitting type signatures for brevity on slides
+^ Full example in 00_Hello.elm
 
 ---
 
@@ -97,6 +98,8 @@ subscriptions model = Time.every Time.second Tick
 
 view model = Html.h1 [] [ Html.text ("The time is " ++ toString model.time) ]
 ```
+
+^ See 00_Clock.elm
 
 ---
 
@@ -151,6 +154,8 @@ view model =
       , line [ x1 "50", y1 "50", x2 handX, y2 handY, stroke "#023963" ] []
       ]
 ```
+
+^ See 02_SvgClock.elm
 
 ---
 
@@ -242,6 +247,8 @@ view model =
         ]
 ```
 
+^ See 03_MsgExample.elm
+
 ---
 
 ## Effect Managers Added
@@ -261,6 +268,10 @@ WebSocket.listen "ws://echo.websocket.org" NewMessage
 ```
 
 (Effect manager handles connection management, errors, re-connecting for you.)
+
+---
+
+## Websocket Example
 
 ---
 
@@ -295,10 +306,15 @@ view model =
 viewMessage msg = Html.p [] [ text msg ]
 ```
 
+^ See 04_WebSocketExample.elm
+
 ---
 
 ## Graphics Demoted to External library
-### Aw
+### :cry:
+
+^ Originally Elm was a javascript graphics library.
+^ This library begat Elm which shipped with a fun graphics library.
 
 ---
 
@@ -337,6 +353,8 @@ view model =
             ] |> Element.toHtml
         ]
 ```
+
+^ See 05_GraphicsExample.elm
 
 ---
 
@@ -392,12 +410,11 @@ Html.div []
     ]
 ```
 
+^ See 06_GraphicsClock.elm
 
 ---
 
 # More on 0.17
-
----
 
 http://elm-lang.org/blog/farewell-to-frp
 
