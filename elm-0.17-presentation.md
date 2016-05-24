@@ -1,8 +1,8 @@
 theme: Fira
 
 # Elm 0.17
-## Introduction & What's New
 ### Michael Twomey @ Elm Dublin May 2016
+### https://github.com/micktwomey/elm-0.17-dublin-elm-may-2016
 
 ---
 
@@ -414,8 +414,6 @@ Html.div []
 
 ---
 
-# More on 0.17
-
 http://elm-lang.org/blog/farewell-to-frp
 
 http://guide.elm-lang.org
@@ -423,3 +421,5 @@ http://guide.elm-lang.org
 http://www.lambdacat.com/migrating-from-elm-0-16-to-0-17-from-startapp/
 
 http://noredink.github.io/posts/signalsmigration.html
+
+https://github.com/micktwomey/elm-0.17-dublin-elm-may-2016
