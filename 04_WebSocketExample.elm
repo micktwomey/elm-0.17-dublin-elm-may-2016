@@ -28,7 +28,8 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model "" [], WebSocket.send echoServer "Hello" )
+    -- Model "" [] is equivalent to { input = "", messages = [] } (Model acts as a constructor function too)
+    ( { input = "", messages = [] }, WebSocket.send echoServer "Hello" )
 
 
 type Msg
@@ -36,10 +37,14 @@ type Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update msg { input, messages } =
+update msg model =
     case msg of
         NewMessage str ->
-            ( Model input (str :: messages), Cmd.none )
+            let
+                -- :: is the List "cons" function, puts an item on the head of a list
+                newMessages = str :: model.messages
+            in
+                ( { model | messages = newMessages }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
